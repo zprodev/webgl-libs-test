@@ -22,14 +22,17 @@ const libs = {
 }
 
 const tests = {
-  'sprite1000': {
+  'sprite-1000': {
     code: 'sprite.1000.js'
   },
-  'sprite5000': {
+  'sprite-5000': {
     code: 'sprite.5000.js'
   },
-  'sprite10000': {
+  'sprite-10000': {
     code: 'sprite.10000.js'
+  },
+  'sprite-multi-10000': {
+    code: 'sprite.multi.10000.js'
   },
 }
 
@@ -55,7 +58,6 @@ if (window.innerWidth / window.innerHeight >= 1) {
 
 // GUI表示
 const gui = new dat.GUI();
-gui.domElement.style.margin = '0px';
 Object.keys(libs).forEach((libName) => {
   const guiFolder = gui.addFolder(libName);
   const action = {};
@@ -67,8 +69,14 @@ Object.keys(libs).forEach((libName) => {
   });
 });
 
+// GUIのstyle上書き
+gui.domElement.style.margin = '0px';
+document.querySelectorAll('.property-name').forEach(element => {
+  element.style.width = '100%';
+});
+
 // Stats表示
-const stats = new Stats({ maxFPS: 60, maxMem: 100 });
+const stats = new Stats({ maxFPS: 60, maxMem: 300 });
 document.body.appendChild(stats.dom);
 function animate() {
   stats.end();
