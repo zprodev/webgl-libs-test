@@ -13,6 +13,9 @@ const libs = {
   'pixi': {
     code: 'https://unpkg.com/pixi.js@latest/dist/pixi.min.js'
   },
+  'phaser': {
+    code: 'https://unpkg.com/phaser@latest/dist/phaser.min.js'
+  },
   'three': {
     code: 'https://unpkg.com/three@latest/build/three.min.js'
   },
