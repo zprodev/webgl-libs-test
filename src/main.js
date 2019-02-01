@@ -8,7 +8,7 @@ const targetTestName = pageParamSplit[1] || 'sprite1000';
 
 const libs = {
   'pixi-v4': {
-    code: 'https://unpkg.com/pixi.js@4.8.5/dist/pixi.min.js'
+    code: 'https://unpkg.com/pixi.js@4/dist/pixi.min.js'
   },
   'pixi': {
     code: 'https://unpkg.com/pixi.js@latest/dist/pixi.min.js'
