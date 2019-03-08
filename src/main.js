@@ -4,7 +4,7 @@ const pageUrl = hrefSplit[0];
 const pageParam = (hrefSplit[1]) ? hrefSplit[1].split('=')[1] : undefined;
 const pageParamSplit = (pageParam) ? pageParam.split(':') : [];
 const targetLibName = pageParamSplit[0] || 'pixi';
-const targetTestName = pageParamSplit[1] || 'sprite1000';
+const targetTestName = pageParamSplit[1] || 'sprite-1000';
 
 const libs = {
   'pixi-v4': {
@@ -14,7 +14,7 @@ const libs = {
     code: 'https://unpkg.com/pixi.js@latest/dist/pixi.min.js'
   },
   'phaser': {
-    code: 'https://unpkg.com/phaser@latest/dist/phaser.min.js'
+    code: 'https://unpkg.com/phaser@latest/dist/phaser.js'
   },
   'three': {
     code: 'https://unpkg.com/three@latest/build/three.min.js'
@@ -24,7 +24,7 @@ const libs = {
   },
 }
 
-const tests = {
+const commonTests = {
   'sprite-1000': {
     code: 'sprite.1000.js'
   },
@@ -36,6 +36,29 @@ const tests = {
   },
   'sprite-multi-10000': {
     code: 'sprite.multi.10000.js'
+  },
+}
+
+const originTests = {
+  'pixi-v4': {
+    'text-1000': {
+      code: 'text.1000.js'
+    },
+  },
+  'pixi': {
+    'text-1000': {
+      code: 'text.1000.js'
+    },
+  },
+  'phaser': {
+    'text-1000': {
+      code: 'text.1000.js'
+    },
+  },
+  'three': {
+    'text-1000': {
+      code: 'text.1000.js'
+    },
   },
 }
 
@@ -64,12 +87,20 @@ const gui = new dat.GUI();
 Object.keys(libs).forEach((libName) => {
   const guiFolder = gui.addFolder(libName);
   const action = {};
-  Object.keys(tests).forEach((testName) => {
+  Object.keys(commonTests).forEach((testName) => {
     action[testName] = () => {
       window.location.href = `${pageUrl}?test=${libName}:${testName}`;
     }
     guiFolder.add(action, testName);
   });
+  if (originTests[libName]) {
+    Object.keys(originTests[libName]).forEach((testName) => {
+      action[testName] = () => {
+        window.location.href = `${pageUrl}?test=${libName}:${testName}`;
+      }
+      guiFolder.add(action, testName);
+    });
+  };
 });
 
 // GUIのstyle上書き
@@ -94,6 +125,10 @@ libScriptElement.src = libs[targetLibName].code;
 document.body.appendChild(libScriptElement);
 libScriptElement.onload = () => {
   const testScriptElement = document.createElement('script');
-  testScriptElement.src = `src/${targetLibName}/${tests[targetTestName].code}`;
+  if (commonTests[targetTestName]) {
+    testScriptElement.src = `src/${targetLibName}/${commonTests[targetTestName].code}`;
+  } else {
+    testScriptElement.src = `src/${targetLibName}/${originTests[targetLibName][targetTestName].code}`;    
+  }
   document.body.appendChild(testScriptElement);
 }
