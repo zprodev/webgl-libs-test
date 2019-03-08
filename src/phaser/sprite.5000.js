@@ -10,6 +10,7 @@ const config = {
     preload: preload,
     create: create
   },
+  type: Phaser.WEBGL,
 };
 new Phaser.Game(config);
 if (window.innerWidth / window.innerHeight >= 1) {
