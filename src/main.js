@@ -22,6 +22,9 @@ const libs = {
   'babylon': {
     code: 'https://unpkg.com/babylonjs@latest/babylon.js'
   },
+  'o-gl': {
+    code: ''
+  },
 }
 
 const commonTests = {
@@ -58,6 +61,20 @@ const originTests = {
   'three': {
     'text-1000': {
       code: 'text.1000.js'
+    },
+    'cube-1000': {
+      code: 'cube.1000.js'
+    },
+    'cube-10000': {
+      code: 'cube.10000.js'
+    },
+  },
+  'o-gl': {
+    'cube-1000': {
+      code: 'cube.1000.js'
+    },
+    'cube-10000': {
+      code: 'cube.10000.js'
     },
   },
 }
@@ -119,16 +136,24 @@ function animate() {
 }
 animate();
 
-// 対象のライブラリとテストを読み込む
-const libScriptElement = document.createElement('script');
-libScriptElement.src = libs[targetLibName].code;
-document.body.appendChild(libScriptElement);
-libScriptElement.onload = () => {
+const execTextScript = () => {
   const testScriptElement = document.createElement('script');
+  testScriptElement.type = 'module';
   if (commonTests[targetTestName]) {
     testScriptElement.src = `src/${targetLibName}/${commonTests[targetTestName].code}`;
   } else {
     testScriptElement.src = `src/${targetLibName}/${originTests[targetLibName][targetTestName].code}`;    
   }
   document.body.appendChild(testScriptElement);
+};
+
+if(libs[targetLibName].code.length){
+  // 対象のライブラリとテストを読み込む
+  const libScriptElement = document.createElement('script');
+  libScriptElement.src = libs[targetLibName].code;
+  document.body.appendChild(libScriptElement);
+  libScriptElement.onload = execTextScript;
+}else{
+  // テストを読み込む(ESModule対応済みライブラリなど)
+  execTextScript();
 }
