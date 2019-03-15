@@ -12,6 +12,7 @@ const camera = new THREE.PerspectiveCamera(
 camera.position.set(0, 0, 500);
 
 const objNum = 10000;
+const material = new THREE.MeshBasicMaterial();
 
 const randomMinX = -targetCanvasWidthHalf;
 const randomMaxX = targetCanvasWidthHalf;
@@ -24,7 +25,6 @@ const objs = [];
 
 for (let objCount = 0; objCount < objNum; objCount++) {
   const geometry = new THREE.BoxGeometry(10, 10, 10);
-  const material = new THREE.MeshBasicMaterial();
   const cube = new THREE.Mesh(geometry, material);
   scene.add(cube);
   cube.position.x = Math.random() * (randomMaxX - randomMinX) + randomMinX;
