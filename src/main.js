@@ -6,84 +6,92 @@ const pageParamSplit = (pageParam) ? pageParam.split(':') : [];
 const targetLibName = pageParamSplit[0] || 'pixi';
 const targetTestName = pageParamSplit[1] || 'sprite-1000';
 
+function mergeTests(lib, tests) {
+  lib.tests = lib.tests.concat(tests);
+}
+
 const libs = {
   'pixi-v4': {
-    code: 'https://unpkg.com/pixi.js@4/dist/pixi.min.js'
+    code: 'https://unpkg.com/pixi.js@4/dist/pixi.min.js',
+    tests: [],
   },
   'pixi': {
-    code: 'https://unpkg.com/pixi.js@latest/dist/pixi.min.js'
+    code: 'https://unpkg.com/pixi.js@latest/dist/pixi.min.js',
+    tests: [],
   },
   'phaser': {
-    code: 'https://unpkg.com/phaser@latest/dist/phaser.js'
+    code: 'https://unpkg.com/phaser@latest/dist/phaser.js',
+    tests: [],
   },
   'three': {
-    code: 'https://unpkg.com/three@latest/build/three.min.js'
+    code: 'https://unpkg.com/three@latest/build/three.min.js',
+    tests: [],
   },
   'babylon': {
-    code: 'https://unpkg.com/babylonjs@latest/babylon.js'
+    code: 'https://unpkg.com/babylonjs@latest/babylon.js',
+    tests: [],
   },
   'o-gl': {
-    code: ''
+    code: '',
+    tests: [],
   },
 }
 
-const commonTests = {
-  'sprite-1000': {
+const spriteTests = [
+  {
+    name: 'sprite-1000',
     code: 'sprite.1000.js'
   },
-  'sprite-5000': {
+  {
+    name: 'sprite-5000',
     code: 'sprite.5000.js'
   },
-  'sprite-10000': {
+  {
+    name: 'sprite-10000',
     code: 'sprite.10000.js'
   },
-  'sprite-multi-10000': {
+  {
+    name: 'sprite-multi-10000',
     code: 'sprite.multi.10000.js'
   },
-}
+];
 
-const originTests = {
-  'pixi-v4': {
-    'text-1000': {
-      code: 'text.1000.js'
-    },
+mergeTests(libs['pixi-v4'], spriteTests);
+mergeTests(libs['pixi'], spriteTests);
+mergeTests(libs['phaser'], spriteTests);
+mergeTests(libs['three'], spriteTests);
+mergeTests(libs['babylon'], spriteTests);
+
+const textTests = [
+  {
+    name: 'text-1000',
+    code: 'text.1000.js'
   },
-  'pixi': {
-    'text-1000': {
-      code: 'text.1000.js'
-    },
+];
+
+mergeTests(libs['pixi-v4'], textTests);
+mergeTests(libs['pixi'], textTests);
+mergeTests(libs['phaser'], textTests);
+mergeTests(libs['three'], textTests);
+
+const cubeTests = [
+  {
+    name: 'cube-1000',
+    code: 'cube.1000.js'
   },
-  'phaser': {
-    'text-1000': {
-      code: 'text.1000.js'
-    },
+  {
+    name: 'cube-10000',
+    code: 'cube.10000.js'
   },
-  'three': {
-    'text-1000': {
-      code: 'text.1000.js'
-    },
-    'cube-1000': {
-      code: 'cube.1000.js'
-    },
-    'cube-10000': {
-      code: 'cube.10000.js'
-    },
-    'cube-lighting-1000': {
-      code: 'cube.lighting.1000.js'
-    },
+  {
+    name: 'cube-lighting-1000',
+    code: 'cube.lighting.1000.js'
   },
-  'o-gl': {
-    'cube-1000': {
-      code: 'cube.1000.js'
-    },
-    'cube-10000': {
-      code: 'cube.10000.js'
-    },
-    'cube-lighting-1000': {
-      code: 'cube.lighting.1000.js'
-    },
-  },
-}
+];
+
+mergeTests(libs['three'], cubeTests);
+mergeTests(libs['o-gl'], cubeTests);
+
 
 // canvas表示
 const canvas = document.createElement('canvas');
@@ -110,20 +118,12 @@ const gui = new dat.GUI();
 Object.keys(libs).forEach((libName) => {
   const guiFolder = gui.addFolder(libName);
   const action = {};
-  Object.keys(commonTests).forEach((testName) => {
-    action[testName] = () => {
-      window.location.href = `${pageUrl}?test=${libName}:${testName}`;
+  libs[libName].tests.forEach(test => {
+    action[test.name] = () => {
+      window.location.href = `${pageUrl}?test=${libName}:${test.name}`;
     }
-    guiFolder.add(action, testName);
+    guiFolder.add(action, test.name);
   });
-  if (originTests[libName]) {
-    Object.keys(originTests[libName]).forEach((testName) => {
-      action[testName] = () => {
-        window.location.href = `${pageUrl}?test=${libName}:${testName}`;
-      }
-      guiFolder.add(action, testName);
-    });
-  };
 });
 
 // GUIのstyle上書き
@@ -145,11 +145,11 @@ animate();
 const execTextScript = () => {
   const testScriptElement = document.createElement('script');
   testScriptElement.type = 'module';
-  if (commonTests[targetTestName]) {
-    testScriptElement.src = `src/${targetLibName}/${commonTests[targetTestName].code}`;
-  } else {
-    testScriptElement.src = `src/${targetLibName}/${originTests[targetLibName][targetTestName].code}`;    
-  }
+  libs[targetLibName].tests.forEach(test => {
+    if (test.name === targetTestName) {
+      testScriptElement.src = `src/${targetLibName}/${test.code}`;
+    }
+  });
   document.body.appendChild(testScriptElement);
 };
 
