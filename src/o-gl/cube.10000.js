@@ -11,9 +11,11 @@ const targetCanvasStyleHeight = targetCanvas.style.height;
 
 const renderer = new Renderer({
   canvas: targetCanvas,
-  width: parseInt(targetCanvasStyleWidth),
-  height: parseInt(targetCanvasStyleHeight),
+  width: targetCanvasWidth,
+  height: targetCanvasHeight,
 });
+targetCanvas.style.width = targetCanvasStyleWidth;
+targetCanvas.style.height = targetCanvasStyleHeight;
 const gl = renderer.gl;
 
 const camera = new Camera(gl, {
