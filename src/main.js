@@ -68,6 +68,9 @@ const originTests = {
     'cube-10000': {
       code: 'cube.10000.js'
     },
+    'cube-lighting-1000': {
+      code: 'cube.lighting.1000.js'
+    },
   },
   'o-gl': {
     'cube-1000': {
@@ -75,6 +78,9 @@ const originTests = {
     },
     'cube-10000': {
       code: 'cube.10000.js'
+    },
+    'cube-lighting-1000': {
+      code: 'cube.lighting.1000.js'
     },
   },
 }
