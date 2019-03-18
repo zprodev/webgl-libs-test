@@ -92,6 +92,14 @@ const cubeTests = [
 mergeTests(libs['three'], cubeTests);
 mergeTests(libs['o-gl'], cubeTests);
 
+const pbsTests = [
+  {
+    name: 'cube-lighting-pbs-1000',
+    code: 'cube.lighting.pbs.1000.js'
+  },
+];
+
+mergeTests(libs['three'], pbsTests);
 
 // canvas表示
 const canvas = document.createElement('canvas');
