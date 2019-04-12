@@ -101,6 +101,15 @@ const pbsTests = [
 
 mergeTests(libs['three'], pbsTests);
 
+const spineTests = [
+  {
+    name: 'spine-1000',
+    code: 'spine.1000.js'
+  },
+];
+
+mergeTests(libs['pixi-v4'], spineTests);
+
 // canvas表示
 const canvas = document.createElement('canvas');
 canvas.id = 'targetCanvas';
