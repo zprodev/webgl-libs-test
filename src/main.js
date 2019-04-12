@@ -62,6 +62,15 @@ mergeTests(libs['phaser'], spriteTests);
 mergeTests(libs['three'], spriteTests);
 mergeTests(libs['babylon'], spriteTests);
 
+const sprite3dTests = [
+  {
+    name: 'sprite3d-multi-10000',
+    code: 'sprite3d.multi.10000.js'
+  },
+];
+
+mergeTests(libs['pixi-v4'], sprite3dTests);
+
 const textTests = [
   {
     name: 'text-1000',
@@ -109,15 +118,6 @@ const spineTests = [
 ];
 
 mergeTests(libs['pixi-v4'], spineTests);
-
-const sprite3dTests = [
-  {
-    name: 'sprite3d-multi-10000',
-    code: 'sprite3d.multi.10000.js'
-  },
-];
-
-mergeTests(libs['pixi-v4'], sprite3dTests);
 
 // canvas表示
 const canvas = document.createElement('canvas');
